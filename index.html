@@ -21,7 +21,7 @@
     </a>
 
     <!-- Center: Navigation Menu Links (Desktop Only) -->
-<nav id="navLinks" class="hidden md:!flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-600">
+<nav id="navLinks" class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-600">
   <a href="index.html" class="nav-item hover:text-black transition-colors">Home</a>
   <a href="create.html" class="nav-item hover:text-black transition-colors flex items-center gap-1.5">
     <i class="fa-solid fa-pen-nib text-slate-400"></i> Create Blog
@@ -145,36 +145,40 @@
   <script type="module" src="./js/main.js"></script>
   <script type="module" src="./js/menu-animation.js"></script>
   <script>
-    // GSAP Hero Animation
+    // GSAP Hero Animations
     gsap.from(".hero-sub", { opacity: 0, y: -20, duration: 0.8, delay: 0.2 });
     gsap.from(".hero-title", { opacity: 0, y: 30, duration: 1, delay: 0.4 });
     gsap.from(".hero-desc", { opacity: 0, y: 30, duration: 1, delay: 0.6 });
     gsap.from(".hero-btn", { opacity: 0, scale: 0.8, duration: 0.8, delay: 0.8 });
 
-    document.addEventListener("DOMContentLoaded", () => {
-  const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-  const mobileMenu = document.getElementById("mobileMenu");
-  const icon = mobileMenuBtn?.querySelector("i");
+    // Mobile Menu Toggle Engine
+    window.addEventListener("DOMContentLoaded", () => {
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const icon = mobileMenuBtn?.querySelector("i");
 
-  mobileMenuBtn?.addEventListener("click", () => {
-    if (!mobileMenu) return;
+      if (!mobileMenuBtn || !mobileMenu) return;
 
-    const isHidden = mobileMenu.classList.contains("hidden");
+      mobileMenuBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const isHidden = mobileMenu.classList.contains("hidden");
 
-    if (isHidden) {
-      mobileMenu.classList.remove("hidden");
-      if (icon) icon.className = "fa-solid fa-xmark";
-      
-      // Smooth GSAP animation if GSAP exists
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(mobileMenu, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-      }
-    } else {
-      mobileMenu.classList.add("hidden");
-      if (icon) icon.className = "fa-solid fa-bars";
-    }
-  });
-});
+        if (isHidden) {
+          mobileMenu.classList.remove("hidden");
+          if (icon) icon.className = "fa-solid fa-xmark";
+          
+          if (typeof gsap !== "undefined") {
+            gsap.fromTo(mobileMenu, 
+              { opacity: 0, y: -10 }, 
+              { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }
+            );
+          }
+        } else {
+          mobileMenu.classList.add("hidden");
+          if (icon) icon.className = "fa-solid fa-bars";
+        }
+      });
+    });
   </script>
 </body>
 </html>

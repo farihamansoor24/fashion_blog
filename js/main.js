@@ -1,5 +1,5 @@
 import { db, collection, query, orderBy, onSnapshot, where, getDocs, doc, deleteDoc,onAuthStateChanged,auth,signOut } from './firebase.js';
-import { initAuth } from './auth.js';
+import { initAuth, showGuestUI,showUserUI } from './auth.js';
 import { toggleSavePost } from './saved.js';
 
 const postsGrid = document.getElementById("postsGrid");
@@ -188,3 +188,4 @@ document.addEventListener("keydown", (e) => {
     hideImageModal();
   }
 });
+

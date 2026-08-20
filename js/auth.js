@@ -52,10 +52,58 @@ const forgotForm = document.getElementById("forgotForm");
 const forgotEmail = document.getElementById("forgotEmail");
 const forgotAlert = document.getElementById("forgotAlert");
 
+export function showUserUI(user) {
+  const navLinks = document.getElementById("navLinks");
+  const navAuthBtns = document.getElementById("navAuthBtns");
+  const navUserMenu = document.getElementById("navUserMenu");
+  const userName = document.getElementById("userName");
+  const userAvatar = document.getElementById("userAvatar");
 
+  // NavLinks display fix (Responsive styling barqrar rahe)
+  if (navLinks) {
+    navLinks.className = "hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-600";
+    navLinks.style.display = "";
+  }
+
+  // Auth Buttons ko hide karein aur User Profile/Logout menu ko show karein
+  if (navAuthBtns) navAuthBtns.classList.add("hidden");
+  if (navUserMenu) {
+    navUserMenu.classList.remove("hidden");
+    navUserMenu.classList.add("md:flex");
+  }
+
+  // User Details Set Karein (Firebase user object se)
+  if (userName) {
+    userName.textContent = user.displayName || user.email.split('@')[0];
+  }
+
+  // Avatar Avatar First Letter Set Karein
+  if (userAvatar) {
+    const name = user.displayName || user.email;
+    userAvatar.textContent = name.charAt(0).toUpperCase();
+  }
+}
+export function showGuestUI() {
+  const navLinks = document.getElementById("navLinks");
+  const navAuthBtns = document.getElementById("navAuthBtns");
+  const navUserMenu = document.getElementById("navUserMenu");
+
+  // Incorrect: navLinks.style.display = "flex";  <-- Yeh line mobile par issue karti hai
+
+  // Correct Approach:
+  if (navLinks) {
+    // Classes reset karein taake Tailwind responsive utility (`hidden md:flex`) sahi kaam kare
+    navLinks.className = "hidden items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-600";
+    navLinks.style.display = ""; // Inline display style ko clear kar dein
+  }
+
+  if (navAuthBtns) navAuthBtns.classList.remove("hidden");
+  if (navUserMenu) navUserMenu.classList.add("hidden");
+}
 // Auth State Listener
 export function initAuth(userCallback) {
   onAuthStateChanged(auth, (user) => {
+    
     const navAuthBtns = document.getElementById("navAuthBtns");
     const navUserMenu = document.getElementById("navUserMenu");
      const navLinks = document.getElementById("navLinks");
@@ -64,6 +112,7 @@ export function initAuth(userCallback) {
     const userAvatar = document.getElementById("userAvatar");
 
     if (user) {
+      showUserUI(user);
       if(navLinks){
         navLinks.classList.add("md:flex");
         navLinks.classList.remove("hidden");
@@ -80,9 +129,11 @@ export function initAuth(userCallback) {
       }
       if (userName) userName.textContent = user.displayName || user.email.split('@')[0];
     } else {
+      // User logged in nahi hai -> Call showGuestUI()
+    showGuestUI();
       if (navUserMenu) {
         navUserMenu.classList.add("hidden");
-        navUserMenu.classList.remove("flex");
+        navUserMenu.classList.remove("md:flex");
       }
       if (navAuthBtns) navAuthBtns.classList.remove("hidden");
     }
