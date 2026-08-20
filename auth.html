@@ -23,21 +23,17 @@
   <main class="max-w-7xl mx-auto px-6 py-8 w-full flex-grow flex items-center">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full items-stretch">
       
-      <!-- Left Column: Premium Fashion Banner Image Section (5 Cols) -->
+      <!-- Left Column: Premium Fashion Banner Image Section -->
       <div id="authVisual" class="lg:col-span-5 relative rounded-3xl overflow-hidden min-h-[360px] lg:min-h-[620px] bg-slate-900 border border-slate-200 shadow-xl flex flex-col justify-between p-8 sm:p-10 opacity-0 transform -translate-x-12">
-        
-        <!-- High-Fashion Cover Image with Smooth Zoom Effect -->
         <div id="heroImage" class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-out scale-110 opacity-75" style="background-image: url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200');"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/10"></div>
 
-        <!-- Top Badge -->
         <div class="relative z-10 flex items-center justify-between">
           <span id="badge" class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 text-white text-[10px] uppercase font-bold tracking-widest rounded-full backdrop-blur-md border border-white/20 shadow-lg">
             <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Exclusive Access
           </span>
         </div>
 
-        <!-- Bottom Text Content Staggered Animations -->
         <div id="visualText" class="relative z-10 text-white space-y-3">
           <p class="visual-item text-xs uppercase tracking-[0.25em] font-bold text-amber-400">Haute Couture Journal</p>
           <h2 class="visual-item font-serif text-3xl md:text-4xl font-bold leading-tight drop-shadow-md">Elevate Your Fashion Perspective</h2>
@@ -45,7 +41,7 @@
         </div>
       </div>
 
-      <!-- Right Column: Animated Auth Form & Social Login (7 Cols) -->
+      <!-- Right Column: Animated Auth Form & Social Login -->
       <div id="authCard" class="lg:col-span-7 bg-white p-8 sm:p-12 rounded-3xl shadow-xl border border-slate-100 flex flex-col justify-between opacity-0 transform translate-x-12">
         
         <div>
@@ -75,7 +71,7 @@
             <div class="flex-grow border-t border-slate-200"></div>
           </div>
 
-          <!-- Toggle Tabs (Log In vs Sign Up) -->
+          <!-- Toggle Tabs -->
           <div class="flex border-b border-slate-200 mb-6 text-xs uppercase font-bold tracking-widest text-center relative">
             <button id="loginTab" type="button" class="w-1/2 pb-3 border-b-2 border-black text-black transition-all duration-300">Log In</button>
             <button id="signupTab" type="button" class="w-1/2 pb-3 border-b-2 border-transparent text-slate-400 hover:text-black transition-all duration-300">Sign Up</button>
@@ -83,9 +79,26 @@
 
           <!-- Auth Form -->
           <form id="authForm" class="space-y-4">
+            
+            <!-- Dynamic Fields for Signup Only -->
+            <div id="usernameGroup" class="form-group hidden">
+              <label class="block text-xs uppercase font-bold tracking-widest text-slate-500 mb-2">Username</label>
+              <input type="text" id="authUsername" placeholder="johndoe" class="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/10 transition duration-300">
+            </div>
+
             <div class="form-group">
               <label class="block text-xs uppercase font-bold tracking-widest text-slate-500 mb-2">Email Address</label>
               <input type="email" id="authEmail" required placeholder="name@domain.com" class="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/10 transition duration-300">
+            </div>
+
+            <div id="contactGroup" class="form-group hidden">
+              <label class="block text-xs uppercase font-bold tracking-widest text-slate-500 mb-2">Contact Number</label>
+              <input type="tel" id="authContact" placeholder="+1 234 567 890" class="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/10 transition duration-300">
+            </div>
+
+            <div id="countryGroup" class="form-group hidden">
+              <label class="block text-xs uppercase font-bold tracking-widest text-slate-500 mb-2">Country</label>
+              <input type="text" id="authCountry" placeholder="United States" class="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-600/10 transition duration-300">
             </div>
 
             <div class="form-group">
@@ -144,18 +157,51 @@
       gsap.to(heroImg, { x: 0, y: 0, scale: 1, duration: 0.8, ease: "power2.out" });
     });
 
-    // Tab Switch Animation
+    // Tab Switch Animation & Extra Fields Toggle Logic
     const loginTab = document.getElementById("loginTab");
     const signupTab = document.getElementById("signupTab");
     const authSubtitle = document.getElementById("authSubtitle");
     const authSubmitBtn = document.getElementById("authSubmitBtn");
 
-    function animateTabSwitch(title, btnText, activeTab, inactiveTab) {
+    const usernameGroup = document.getElementById("usernameGroup");
+    const contactGroup = document.getElementById("contactGroup");
+    const countryGroup = document.getElementById("countryGroup");
+
+    const authUsername = document.getElementById("authUsername");
+    const authContact = document.getElementById("authContact");
+    const authCountry = document.getElementById("authCountry");
+
+    let isSignupMode = false;
+
+    function toggleSignupFields(show) {
+      isSignupMode = show;
+      if (show) {
+        usernameGroup.classList.remove("hidden");
+        contactGroup.classList.remove("hidden");
+        countryGroup.classList.remove("hidden");
+
+        authUsername.setAttribute("required", "true");
+        authContact.setAttribute("required", "true");
+        authCountry.setAttribute("required", "true");
+      } else {
+        usernameGroup.classList.add("hidden");
+        contactGroup.classList.add("hidden");
+        countryGroup.classList.add("hidden");
+
+        authUsername.removeAttribute("required");
+        authContact.removeAttribute("required");
+        authCountry.removeAttribute("required");
+      }
+    }
+
+    function animateTabSwitch(title, btnText, activeTab, inactiveTab, isSignup) {
       activeTab.className = "w-1/2 pb-3 border-b-2 border-black text-black transition-all duration-300 font-bold";
       inactiveTab.className = "w-1/2 pb-3 border-b-2 border-transparent text-slate-400 hover:text-black transition-all duration-300";
       
       if (authSubtitle) authSubtitle.textContent = title;
       if (authSubmitBtn) authSubmitBtn.textContent = btnText;
+
+      toggleSignupFields(isSignup);
 
       gsap.fromTo("#authForm", 
         { opacity: 0, y: 15, scale: 0.98 }, 
@@ -164,11 +210,11 @@
     }
 
     loginTab?.addEventListener("click", () => {
-      animateTabSwitch("Welcome Back", "Log In", loginTab, signupTab);
+      animateTabSwitch("Welcome Back", "Log In", loginTab, signupTab, false);
     });
 
     signupTab?.addEventListener("click", () => {
-      animateTabSwitch("Create Your Account", "Sign Up", signupTab, loginTab);
+      animateTabSwitch("Create Your Account", "Sign Up", signupTab, loginTab, true);
     });
   </script>
 </body>

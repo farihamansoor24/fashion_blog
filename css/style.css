@@ -16,7 +16,54 @@ body {
 .font-serif { 
   font-family: 'Playfair Display', serif; 
 }
+/* Links Container Position Fix */
+.nav-item {
+  position: relative;
+  padding-bottom: 4px;
+}
 
+/* Base Hidden Underline (Default Width 0) */
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #d97706; /* Amber Accent */
+  transition: width 0.3s ease, left 0.3s ease;
+  border-radius: 99px;
+}
+
+/* SIRF Hover karne par ya Active Page par line show hogi */
+.nav-item:hover::after,
+.nav-item.active::after {
+  width: 100%;
+  left: 0;
+}
+/* User Badge Pill Glassmorphism */
+#userBadge {
+  background: rgba(248, 250, 252, 0.85);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#userBadge:hover {
+  background: rgba(241, 245, 249, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+/* Logout Button Micro-Hover */
+#logoutBtn {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+#logoutBtn:hover {
+  color: #e11d48;
+}
 /* Card Hover Animation */
 .fashion-card {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;

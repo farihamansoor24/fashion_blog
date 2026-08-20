@@ -6,43 +6,65 @@
   <title>LUXEVIBE | Fashion & Editorial Journal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="bg-[#faf9f6] text-slate-900 antialiased selection:bg-amber-500 selection:text-white">
 
-<!-- Header / Navigation -->
-<header class="sticky top-0 bg-white/80 backdrop-blur-md z-50 border-b border-slate-100">
-  <nav class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<!-- Header Navigation -->
+<header class="bg-white/80 backdrop-blur-md sticky top-0 border-b border-slate-100 z-50 py-3.5 px-6" id="mainHeader">
+  <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
     
-    <!-- Left: Brand Logo -->
-    <a href="index.html" class="font-serif text-2xl md:text-3xl font-extrabold tracking-tight">
+    <!-- 1. Left: Brand Logo -->
+    <a href="index.html" id="headerLogo" class="font-serif text-2xl font-bold tracking-tight">
       LUXEVIBE<span class="text-amber-600">.</span>
     </a>
 
-    <!-- Center/Right: Guest Navigation (Show ONLY when Logged Out) -->
-    <div id="navAuthBtns" class="flex items-center gap-4 text-xs font-bold uppercase tracking-widest">
-      <a href="auth.html?action=login" class="px-4 py-2 hover:text-amber-600 transition">Log In</a>
-      <a href="auth.html?action=signup" class="px-5 py-2.5 bg-black text-white rounded-full hover:bg-amber-600 transition duration-300">Sign Up</a>
-    </div>
+    <!-- 2. Center: Navigation Menu Links -->
 
-    <!-- Center/Right: User Navigation (Show ONLY when Logged In) -->
-    <div id="navUserMenu" class="hidden items-center gap-6 text-xs font-bold uppercase tracking-widest">
-      <a href="saved.html" class="flex items-center gap-1.5 text-slate-700 hover:text-amber-600 transition">
-        <i class="fa-regular fa-bookmark text-sm"></i> <span>Saved</span>
-      </a>
-      <a href="create.html" class="bg-black text-white px-4 py-2.5 rounded-full hover:bg-amber-600 transition duration-300">
-        + Write Story
-      </a>
-      <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
-        <span id="userEmail" class="text-slate-500 font-normal lowercase italic hidden sm:inline"></span>
-        <button id="logoutBtn" title="Logout" class="text-slate-400 hover:text-rose-600 transition text-base ml-1">
-          <i class="fa-solid fa-right-from-bracket"></i>
+    <nav id="navLinks" class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-600">
+  <a href="index.html" class="nav-item hover:text-black transition-colors">Home</a>
+  <a href="create-post.html" class="nav-item hover:text-black transition-colors flex items-center gap-1.5">
+    <i class="fa-solid fa-pen-nib text-slate-400"></i> Create Blog
+  </a>
+  <a href="profile.html" class="nav-item hover:text-black transition-colors">Edit Profile</a>
+   <a href="saved.html" class="nav-item hover:text-black transition-colors">Bookmarks</a>
+</nav>
+
+    <!-- 3. Right Side: Auth Action Buttons & Logged-In User Badge -->
+    <div class="flex items-center gap-4" id="navRightSection">
+      
+      <!-- Guest State (Logged Out) Buttons -->
+      <div id="navAuthBtns" class="flex items-center gap-3">
+        <a href="auth.html" class="text-xs uppercase font-bold tracking-widest text-slate-600 hover:text-black transition">Log In</a>
+        <a href="auth.html?mode=signup" class="px-4 py-2 bg-black text-white text-xs font-bold uppercase tracking-widest rounded-full hover:bg-amber-600 transition">Sign Up</a>
+      </div>
+
+      <!-- Logged-In User Profile & Logout Area -->
+      <div id="navUserMenu" class="hidden items-center gap-3">
+        
+        <!-- User Badge Container -->
+        <a href="profile.html" title="View & Edit Profile" class="flex items-center gap-2.5 bg-slate-100/80 hover:bg-slate-200/70 px-3.5 py-1.5 rounded-full border border-slate-200/60 transition-all duration-300" id="userBadge">
+          <!-- Dynamic Avatar -->
+          <div id="userAvatar" class="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center text-white text-[11px] font-bold shadow-xs">
+          </div>
+          <!-- Username -->
+          <span id="userName" class="text-xs font-semibold tracking-wide text-slate-800 capitalize">
+          </span>
+        </a>
+
+        <!-- Vertical Divider -->
+        <span class="w-[1px] h-4 bg-slate-300 my-auto"></span>
+
+        <!-- Logout Button -->
+        <button id="logoutBtn" class="text-xs font-bold uppercase tracking-wider text-rose-500 hover:text-rose-700 transition duration-200 px-1">
+          Logout
         </button>
       </div>
+
     </div>
 
-  </nav>
+  </div>
 </header>
 
   <!-- Hero Section -->
@@ -98,8 +120,9 @@
       &copy; 2026 LUXEVIBE Journal. All Rights Reserved.
     </div>
   </footer>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script type="module" src="./js/main.js"></script>
+  <script type="module" src="./js/menu-animation.js"></script>
   <script>
     // GSAP Hero Animation
     gsap.from(".hero-sub", { opacity: 0, y: -20, duration: 0.8, delay: 0.2 });

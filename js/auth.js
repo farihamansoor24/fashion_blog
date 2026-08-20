@@ -1,7 +1,24 @@
-import { auth,onAuthStateChanged,signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from './firebase.js';
-
-
+import { 
+  auth, 
+  db, 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut, 
+  GoogleAuthProvider, 
+  signInWithPopup, 
+  doc, 
+  setDoc, 
+  serverTimestamp 
+} from './firebase.js';
+// Random Profile Images List
+const avatarImages = [
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80'
+];
 // Google Login Handler
 const googleAuthBtn = document.getElementById("googleAuthBtn");
 if (googleAuthBtn) {
@@ -20,50 +37,28 @@ if (googleAuthBtn) {
   });
 }
 
-// export function initAuth(userCallback) {
-
-//   // Sync Auth State
-//   onAuthStateChanged(auth, (user) => {
-//     const navAuthBtns = document.getElementById("navAuthBtns");
-// const navUserMenu = document.getElementById("navUserMenu");
-// const userEmail = document.getElementById("userEmail");
-//     if (user) {
-//       // Logged In: Guest buttons chupayein aur User Menu flex dikhayein
-//       if (navAuthBtns) navAuthBtns.classList.add("hidden");
-//       if (navUserMenu) {
-//         navUserMenu.classList.remove("hidden");
-//         navUserMenu.classList.add("flex");
-//       }
-//       if (userEmail) userEmail.textContent = user.email;
-//     } else {
-//       // Logged Out: User Menu chupayein aur Guest buttons dikhayein
-//       if (navUserMenu) {
-//         navUserMenu.classList.add("hidden");
-//         navUserMenu.classList.remove("flex");
-//       }
-//       if (navAuthBtns) navAuthBtns.classList.remove("hidden");
-//     }
-//   });
-// }
-
+// Auth State Listener
 export function initAuth(userCallback) {
-
-  // Sync Auth State
   onAuthStateChanged(auth, (user) => {
     const navAuthBtns = document.getElementById("navAuthBtns");
     const navUserMenu = document.getElementById("navUserMenu");
+    const userName = document.getElementById("userName");
     const userEmail = document.getElementById("userEmail");
+    const userAvatar = document.getElementById("userAvatar");
 
     if (user) {
-      // Logged In: Guest buttons chupayein aur User Menu flex dikhayein
       if (navAuthBtns) navAuthBtns.classList.add("hidden");
+      //  Random Image Set Karein
+      if (userAvatar) {
+        const randomImg = avatarImages[Math.floor(Math.random() * avatarImages.length)];
+        userAvatar.innerHTML = `<img src="${randomImg}" alt="Avatar" class="w-full h-full object-cover rounded-full">`;
+      }
       if (navUserMenu) {
         navUserMenu.classList.remove("hidden");
         navUserMenu.classList.add("flex");
       }
-      if (userEmail) userEmail.textContent = user.email;
+      if (userName) userName.textContent = user.displayName || user.email.split('@')[0];
     } else {
-      // Logged Out: User Menu chupayein aur Guest buttons dikhayein
       if (navUserMenu) {
         navUserMenu.classList.add("hidden");
         navUserMenu.classList.remove("flex");
@@ -71,18 +66,14 @@ export function initAuth(userCallback) {
       if (navAuthBtns) navAuthBtns.classList.remove("hidden");
     }
 
-    // 🔴 CRITICAL FIX: userCallback ko call karein taaki main.js ke posts render ho sakein!
     if (typeof userCallback === 'function') {
       userCallback(user);
     }
   });
 }
-let isLoginMode = true;
 
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('mode') === 'signup') {
-  setMode(false);
-}
+// Tab Switching & Mode Setup
+let isLoginMode = true;
 
 const loginTab = document.getElementById("loginTab");
 const signupTab = document.getElementById("signupTab");
@@ -91,49 +82,87 @@ const authSubmitBtn = document.getElementById("authSubmitBtn");
 const authSubtitle = document.getElementById("authSubtitle");
 const authError = document.getElementById("authError");
 
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('mode') === 'signup') {
+  setMode(false);
+}
+
 loginTab?.addEventListener("click", () => setMode(true));
 signupTab?.addEventListener("click", () => setMode(false));
 
 function setMode(login) {
   isLoginMode = login;
-  authError.classList.add("hidden");
+  if (authError) authError.classList.add("hidden");
+
+  const usernameGroup = document.getElementById('usernameGroup');
+  const contactGroup = document.getElementById('contactGroup');
+  const countryGroup = document.getElementById('countryGroup');
 
   if (login) {
-    loginTab.className = "w-1/2 pb-3 border-b-2 border-black text-black";
-    signupTab.className = "w-1/2 pb-3 border-b-2 border-transparent text-slate-400";
-    authSubmitBtn.textContent = "Log In";
-    authSubtitle.textContent = "Welcome Back";
+    if (loginTab) loginTab.className = "w-1/2 pb-3 border-b-2 border-black text-black font-bold";
+    if (signupTab) signupTab.className = "w-1/2 pb-3 border-b-2 border-transparent text-slate-400";
+    if (authSubmitBtn) authSubmitBtn.textContent = "Log In";
+    if (authSubtitle) authSubtitle.textContent = "Welcome Back";
+
+    // Hide extra signup fields
+    usernameGroup?.classList.add('hidden');
+    contactGroup?.classList.add('hidden');
+    countryGroup?.classList.add('hidden');
   } else {
-    signupTab.className = "w-1/2 pb-3 border-b-2 border-black text-black";
-    loginTab.className = "w-1/2 pb-3 border-b-2 border-transparent text-slate-400";
-    authSubmitBtn.textContent = "Create Account";
-    authSubtitle.textContent = "Join Luxe Club";
+    if (signupTab) signupTab.className = "w-1/2 pb-3 border-b-2 border-black text-black font-bold";
+    if (loginTab) loginTab.className = "w-1/2 pb-3 border-b-2 border-transparent text-slate-400";
+    if (authSubmitBtn) authSubmitBtn.textContent = "Create Account";
+    if (authSubtitle) authSubtitle.textContent = "Join Luxe Club";
+
+    // Show extra signup fields
+    usernameGroup?.classList.remove('hidden');
+    contactGroup?.classList.remove('hidden');
+    countryGroup?.classList.remove('hidden');
   }
 }
 
+// Form Submit Handler
 authForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
-  authError.classList.add("hidden");
+  if (authError) authError.classList.add("hidden");
 
-  const email = document.getElementById("authEmail").value;
-  const password = document.getElementById("authPassword").value;
+  const email = document.getElementById("authEmail")?.value.trim();
+  const password = document.getElementById("authPassword")?.value;
+  const username = document.getElementById("authUsername")?.value.trim();
+  const contact = document.getElementById("authContact")?.value.trim();
+  const country = document.getElementById("authCountry")?.value.trim();
 
   try {
     if (isLoginMode) {
+      // LOG IN
       await signInWithEmailAndPassword(auth, email, password);
     } else {
-      await createUserWithEmailAndPassword(auth, email, password);
+      // SIGN UP
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        username: username || "",
+        email: email,
+        contact: contact || "",
+        country: country || "",
+        createdAt: serverTimestamp()
+      });
     }
-    // Success - Redirect to home
+
+    // Success - Redirect to home page
     window.location.href = "index.html";
+
   } catch (err) {
-    authError.textContent = "Email ID already in use!";
-    authError.classList.remove("hidden");
+    if (authError) {
+      authError.textContent = err.message;
+      authError.classList.remove("hidden");
+    }
   }
 });
 
-// ----------- Logout functionality
-   const logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => signOut(auth));
-  }
+// Logout Handler
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => signOut(auth));
+}
