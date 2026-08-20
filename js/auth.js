@@ -42,11 +42,13 @@ export function initAuth(userCallback) {
   onAuthStateChanged(auth, (user) => {
     const navAuthBtns = document.getElementById("navAuthBtns");
     const navUserMenu = document.getElementById("navUserMenu");
+     const navLinks = document.getElementById("navLinks");
     const userName = document.getElementById("userName");
     const userEmail = document.getElementById("userEmail");
     const userAvatar = document.getElementById("userAvatar");
 
     if (user) {
+      if(navLinks) navLinks.classList.remove("hidden");
       if (navAuthBtns) navAuthBtns.classList.add("hidden");
       //  Random Image Set Karein
       if (userAvatar) {
