@@ -3,7 +3,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-analytics.js";
   import { getFirestore, collection, query, orderBy, onSnapshot, doc, addDoc, updateDoc,getDoc, deleteDoc, serverTimestamp, where, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-  import{ getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+  import{ getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup,sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
   import { getStorage } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-storage.js";
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
@@ -26,4 +26,4 @@
   const db = getFirestore(app);
   const auth = getAuth(app);
   const storage = getStorage(app);
-  export { app, analytics, db, auth , getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, collection, query, orderBy, onSnapshot,doc, addDoc,serverTimestamp, updateDoc, deleteDoc, getDoc, where, getDocs, GoogleAuthProvider, signInWithPopup,storage,setDoc };
+  export { app, analytics, db, auth , getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, collection, query, orderBy, onSnapshot,doc, addDoc,serverTimestamp, updateDoc, deleteDoc, getDoc, where, getDocs, GoogleAuthProvider, signInWithPopup,storage,setDoc,sendPasswordResetEmail };

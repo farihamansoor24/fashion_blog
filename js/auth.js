@@ -9,7 +9,8 @@ import {
   signInWithPopup, 
   doc, 
   setDoc, 
-  serverTimestamp 
+  serverTimestamp ,
+  sendPasswordResetEmail
 } from './firebase.js';
 // Random Profile Images List
 const avatarImages = [
@@ -36,7 +37,14 @@ if (googleAuthBtn) {
     }
   });
 }
-
+// DOM Elements
+const openForgotModal = document.getElementById("openForgotModal");
+const closeForgotModal = document.getElementById("closeForgotModal");
+const cancelForgotBtn = document.getElementById("cancelForgotBtn");
+const forgotModal = document.getElementById("forgotModal");
+const forgotForm = document.getElementById("forgotForm");
+const forgotEmail = document.getElementById("forgotEmail");
+const forgotAlert = document.getElementById("forgotAlert");
 // Auth State Listener
 export function initAuth(userCallback) {
   onAuthStateChanged(auth, (user) => {
@@ -165,7 +173,61 @@ authForm?.addEventListener("submit", async (e) => {
     }
   }
 });
+// Modal Show/Hide Handlers
+openForgotModal?.addEventListener("click", () => {
+  forgotModal?.classList.remove("hidden");
+  forgotModal?.classList.add("flex");
+});
 
+const hideModal = () => {
+  forgotModal?.classList.add("hidden");
+  forgotModal?.classList.remove("flex");
+  if (forgotAlert) forgotAlert.classList.add("hidden");
+  if (forgotForm) forgotForm.reset();
+};
+
+closeForgotModal?.addEventListener("click", hideModal);
+cancelForgotBtn?.addEventListener("click", hideModal);
+
+// Password Reset Email Send Logic
+forgotForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = forgotEmail.value.trim();
+
+  if (!email) return;
+
+  try {
+    await sendPasswordResetEmail(auth, email);
+    
+    showForgotAlert("Password reset email sent! Check your inbox.", "success");
+    
+    setTimeout(() => {
+      hideModal();
+    }, 2500);
+
+  } catch (error) {
+    console.error("Reset Password Error:", error);
+    let msg = "Failed to send reset email.";
+    if (error.code === 'auth/user-not-found') {
+      msg = "No account found with this email.";
+    } else if (error.code === 'auth/invalid-email') {
+      msg = "Please enter a valid email address.";
+    }
+    showForgotAlert(msg, "error");
+  }
+});
+
+function showForgotAlert(message, type) {
+  if (!forgotAlert) return;
+  forgotAlert.textContent = message;
+  forgotAlert.classList.remove("hidden", "bg-emerald-50", "text-emerald-600", "border-emerald-200", "bg-rose-50", "text-rose-600", "border-rose-200");
+
+  if (type === "success") {
+    forgotAlert.classList.add("bg-emerald-50", "text-emerald-600", "border-emerald-200");
+  } else {
+    forgotAlert.classList.add("bg-rose-50", "text-rose-600", "border-rose-200");
+  }
+}
 // Logout Handler
 const logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
