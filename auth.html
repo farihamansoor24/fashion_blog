@@ -116,9 +116,12 @@
             <p id="authError" class="text-xs text-rose-500 bg-rose-50 p-3.5 rounded-xl border border-rose-100 hidden font-medium"></p>
 
             <button type="submit" id="authSubmitBtn" class="w-full py-3.5 bg-black text-white text-xs font-bold uppercase tracking-widest rounded-full hover:bg-amber-600 transition-all duration-300 shadow-lg hover:shadow-amber-600/20 active:scale-[0.99]">
-              Log In
+              <!-- Spinner Loader (Initially Hidden) -->
+    <i id="btnSpinner" class="fa-solid fa-circle-notch fa-spin hidden text-sm"></i>
+             <span id="authBtnText">Log In</span>
             </button>
-          </form>
+
+        </form>
         </div>
         
         <div class="mt-6 text-center text-xs text-slate-400 font-light">
@@ -160,6 +163,7 @@
         <button type="submit" id="sendResetBtn" class="px-5 py-2 rounded-full bg-amber-600 text-white text-xs font-bold uppercase tracking-wider hover:bg-amber-700 transition">
           Send Link
         </button>
+
       </div>
     </form>
 
@@ -205,7 +209,7 @@
     const signupTab = document.getElementById("signupTab");
     const authSubtitle = document.getElementById("authSubtitle");
     const authSubmitBtn = document.getElementById("authSubmitBtn");
-
+    const authBtnText = document.getElementById("authBtnText");
     const usernameGroup = document.getElementById("usernameGroup");
     const contactGroup = document.getElementById("contactGroup");
     const countryGroup = document.getElementById("countryGroup");
@@ -242,8 +246,9 @@
       inactiveTab.className = "w-1/2 pb-3 border-b-2 border-transparent text-slate-400 hover:text-black transition-all duration-300";
       
       if (authSubtitle) authSubtitle.textContent = title;
-      if (authSubmitBtn) authSubmitBtn.textContent = btnText;
-
+      // if (authSubmitBtn) authSubmitBtn.textContent = btnText;
+       // FIX: Direct button text change mat karein, span update karein!
+      if (authBtnText) authBtnText.textContent = btnText;
       toggleSignupFields(isSignup);
 
       gsap.fromTo("#authForm", 

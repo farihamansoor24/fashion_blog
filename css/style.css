@@ -81,3 +81,9 @@ body {
 .fashion-card:hover img {
   transform: scale(1.06);
 }
+/* Mobile screens par Desktop Navigation ko forcefully hide karne ke liye */
+@media (max-width: 960px) {
+  #navLinks {
+    display: none !important;
+  }
+}

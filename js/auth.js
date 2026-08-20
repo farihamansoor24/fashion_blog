@@ -12,6 +12,8 @@ import {
   serverTimestamp ,
   sendPasswordResetEmail
 } from './firebase.js';
+
+
 // Random Profile Images List
 const avatarImages = [
   'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
@@ -20,6 +22,8 @@ const avatarImages = [
   'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80',
   'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80'
 ];
+
+
 // Google Login Handler
 const googleAuthBtn = document.getElementById("googleAuthBtn");
 if (googleAuthBtn) {
@@ -37,6 +41,8 @@ if (googleAuthBtn) {
     }
   });
 }
+
+
 // DOM Elements
 const openForgotModal = document.getElementById("openForgotModal");
 const closeForgotModal = document.getElementById("closeForgotModal");
@@ -45,6 +51,8 @@ const forgotModal = document.getElementById("forgotModal");
 const forgotForm = document.getElementById("forgotForm");
 const forgotEmail = document.getElementById("forgotEmail");
 const forgotAlert = document.getElementById("forgotAlert");
+
+
 // Auth State Listener
 export function initAuth(userCallback) {
   onAuthStateChanged(auth, (user) => {
@@ -94,12 +102,28 @@ const authForm = document.getElementById("authForm");
 const authSubmitBtn = document.getElementById("authSubmitBtn");
 const authSubtitle = document.getElementById("authSubtitle");
 const authError = document.getElementById("authError");
-
+const btnSpinner = document.getElementById('btnSpinner');
+const btnText = document.getElementById('btnText');
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get('mode') === 'signup') {
   setMode(false);
 }
 
+
+// Helper: Show/Hide Loader State
+function setLoading(isLoading) { 
+  if (isLoading) {
+    authSubmitBtn.disabled = true;
+    authSubmitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+    btnSpinner?.classList.remove('hidden');
+    if(btnText)btnText.textContent = "Processing...";
+  } else {
+    authSubmitBtn.disabled = false;
+    authSubmitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+    btnSpinner?.classList.add('hidden');
+     if(btnText)btnText.textContent = "Login";
+  }
+}
 loginTab?.addEventListener("click", () => setMode(true));
 signupTab?.addEventListener("click", () => setMode(false));
 
@@ -137,6 +161,7 @@ function setMode(login) {
 // Form Submit Handler
 authForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
+
   if (authError) authError.classList.add("hidden");
 
   const email = document.getElementById("authEmail")?.value.trim();
@@ -146,6 +171,8 @@ authForm?.addEventListener("submit", async (e) => {
   const country = document.getElementById("authCountry")?.value.trim();
 
   try {
+      // 1. Loader Start Karein
+  setLoading(true);
     if (isLoginMode) {
       // LOG IN
       await signInWithEmailAndPassword(auth, email, password);
@@ -171,6 +198,10 @@ authForm?.addEventListener("submit", async (e) => {
       authError.textContent = err.message;
       authError.classList.remove("hidden");
     }
+  }
+  finally {
+    // 4. Loader Stop Karein
+    setLoading(false);
   }
 });
 // Modal Show/Hide Handlers
