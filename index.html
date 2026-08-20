@@ -120,6 +120,20 @@
       &copy; 2026 LUXEVIBE Journal. All Rights Reserved.
     </div>
   </footer>
+  <!-- 🖼️ Image Lightbox Modal Overlay -->
+<div id="imageModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md hidden items-center justify-center z-50 p-4 transition-all duration-300">
+  
+  <!-- Close Button -->
+  <button id="closeImgModal" class="absolute top-6 right-6 text-white text-2xl hover:text-amber-500 transition-colors w-10 h-10 flex items-center justify-center rounded-full bg-black/40">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+
+  <!-- Popup Image Container -->
+  <div class="relative max-w-4xl max-h-[85vh] w-full flex items-center justify-center overflow-hidden rounded-2xl shadow-2xl">
+    <img id="modalImg" src="" alt="Popup Preview" class="max-w-full max-h-[85vh] object-contain rounded-2xl transform scale-95 transition-transform duration-300">
+  </div>
+
+</div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script type="module" src="./js/main.js"></script>
   <script type="module" src="./js/menu-animation.js"></script>

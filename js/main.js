@@ -67,7 +67,7 @@ function listenToPosts() {
       card.innerHTML = `
         <div>
           <div class="relative h-56 bg-slate-100 overflow-hidden">
-            <img src="${post.imageUrl || 'https://images.unsplash.com/photo-1483985988355-763728e1935b'}" class="w-full h-full object-cover">
+            <img src="${post.imageUrl || 'https://images.unsplash.com/photo-1483985988355-763728e1935b'}" class="blog-card-img w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-300">
             <button data-id="${id}" class="bookmark-btn absolute top-3 right-3 bg-white/80 p-2 rounded-full text-slate-700 hover:scale-110 transition">
               <i class="${isBookmarked ? 'fa-solid text-amber-600' : 'fa-regular'} fa-bookmark"></i>
             </button>
@@ -141,3 +141,50 @@ function listenToPosts() {
 
   });
 }
+// Image Modal Elements
+const imageModal = document.getElementById("imageModal");
+const modalImg = document.getElementById("modalImg");
+const closeImgModal = document.getElementById("closeImgModal");
+
+// Event Delegation for dynamically loaded blog card images
+document.addEventListener("click", (e) => {
+  if (e.target && e.target.classList.contains("blog-card-img")) {
+    const imgSrc = e.target.getAttribute("src");
+    
+    if (imgSrc && modalImg && imageModal) {
+      modalImg.src = imgSrc;
+      imageModal.classList.remove("hidden");
+      imageModal.classList.add("flex");
+      
+      // GSAP Zoom-In Effect (optional)
+      if (typeof gsap !== "undefined") {
+        gsap.fromTo(modalImg, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" });
+      }
+    }
+  }
+});
+
+// Modal Close Handlers
+const hideImageModal = () => {
+  if (imageModal) {
+    imageModal.classList.add("hidden");
+    imageModal.classList.remove("flex");
+    if (modalImg) modalImg.src = "";
+  }
+};
+
+closeImgModal?.addEventListener("click", hideImageModal);
+
+// Close Modal when clicking outside the image
+imageModal?.addEventListener("click", (e) => {
+  if (e.target === imageModal) {
+    hideImageModal();
+  }
+});
+
+// Close Modal on pressing ESC key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && imageModal && !imageModal.classList.contains("hidden")) {
+    hideImageModal();
+  }
+});
