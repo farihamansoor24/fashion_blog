@@ -48,7 +48,10 @@ export function initAuth(userCallback) {
     const userAvatar = document.getElementById("userAvatar");
 
     if (user) {
-      if(navLinks) navLinks.classList.remove("hidden");
+      if(navLinks){
+        navLinks.classList.add("md:flex");
+        navLinks.classList.remove("hidden");
+      }
       if (navAuthBtns) navAuthBtns.classList.add("hidden");
       //  Random Image Set Karein
       if (userAvatar) {
