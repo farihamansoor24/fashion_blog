@@ -73,7 +73,7 @@ function listenToPosts() {
             </button>
           </div>
           <div class="p-6">
-            <span class="text-[10px] font-bold uppercase text-amber-600 tracking-widest">By ${(post.authorEmail || 'Guest').split('@')[0]}</span>
+            <span class="text-[10px] font-bold uppercase text-amber-600 tracking-widest">By ${(post.authorName || 'Guest').split('@')[0]}</span>
             <h2 class="font-serif text-xl font-bold my-2 line-clamp-2"><a href="article.html?id=${id}">${post.title}</a></h2>
             <p class="text-slate-500 text-xs line-clamp-3">${post.content}</p>
           </div>

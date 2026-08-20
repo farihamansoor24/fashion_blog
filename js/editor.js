@@ -64,6 +64,8 @@ editorForm?.addEventListener('submit', async (e) => {
          comments: [],
          authorId: currentUser.uid,
          authorEmail: currentUser.email,
+         authorName: currentUser.displayName || "Unknown User",
+         authorAvatar: currentUser.photoURL || "",
          createdAt: serverTimestamp()
       });
       alert("Story published successfully!");
