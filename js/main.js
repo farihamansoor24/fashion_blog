@@ -64,37 +64,84 @@ function listenToPosts() {
       const card = document.createElement("article");
       card.className = "fashion-card bg-white rounded-xl overflow-hidden border border-slate-100 shadow-sm flex flex-col justify-between opacity-0 translate-y-4";
       
-      card.innerHTML = `
-        <div>
-          <div class="relative h-56 bg-slate-100 overflow-hidden">
-            <img src="${post.imageUrl || 'https://images.unsplash.com/photo-1483985988355-763728e1935b'}" class="blog-card-img w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-300">
-            <button data-id="${id}" class="bookmark-btn absolute top-3 right-3 bg-white/80 p-2 rounded-full text-slate-700 hover:scale-110 transition">
-              <i class="${isBookmarked ? 'fa-solid text-amber-600' : 'fa-regular'} fa-bookmark"></i>
-            </button>
-          </div>
-          <div class="p-6">
-            <span class="text-[10px] font-bold uppercase text-amber-600 tracking-widest">By ${(post.authorName || 'Guest').split('@')[0]}</span>
-            <h2 class="font-serif text-xl font-bold my-2 line-clamp-2"><a href="article.html?id=${id}">${post.title}</a></h2>
-            <p class="text-slate-500 text-xs line-clamp-3">${post.content}</p>
-          </div>
-        </div>
+      // card.innerHTML = `
+      //   <div>
+      //     <div class="relative h-56 bg-slate-100 overflow-hidden">
+      //       <img src="${post.imageUrl || 'https://images.unsplash.com/photo-1483985988355-763728e1935b'}" class="blog-card-img w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-300">
+      //       <button data-id="${id}" class="bookmark-btn absolute top-3 right-3 bg-white/80 p-2 rounded-full text-slate-700 hover:scale-110 transition">
+      //         <i class="${isBookmarked ? 'fa-solid text-amber-600' : 'fa-regular'} fa-bookmark"></i>
+      //       </button>
+      //     </div>
+      //     <div class="p-6">
+      //       <span class="text-[10px] font-bold uppercase text-amber-600 tracking-widest">By ${(post.authorName || 'Guest').split('@')[0]}</span>
+      //       <h2 class="font-serif text-xl font-bold my-2 line-clamp-2"><a href="article.html?id=${id}">${post.title}</a></h2>
+      //       <p class="text-slate-500 text-xs line-clamp-3">${post.content}</p>
+      //     </div>
+      //   </div>
         
-        <div class="px-6 py-4 border-t flex justify-between items-center text-xs">
-          <a href="article.html?id=${id}" class="font-bold text-black hover:text-amber-600">Read Article &rarr;</a>
+      //   <div class="px-6 py-4 border-t flex justify-between items-center text-xs">
+      //     <a href="article.html?id=${id}" class="font-bold text-black hover:text-amber-600">Read Article &rarr;</a>
           
-          <!-- Edit/Delete Action Buttons (Only for Author) -->
-          ${isAuthor ? `
-            <div class="flex items-center gap-3">
-              <a href="create.html?edit=${id}" class="text-slate-600 font-bold hover:text-black">
-                <i class="fa-regular fa-pen-to-square"></i> Edit
-              </a>
-              <button data-delete-id="${id}" class="delete-post-btn text-rose-600 font-bold hover:underline">
-                <i class="fa-regular fa-trash-can"></i> Delete
-              </button>
-            </div>
-          ` : ''}
+      //     <!-- Edit/Delete Action Buttons (Only for Author) -->
+      //     ${isAuthor ? `
+      //       <div class="flex items-center gap-3">
+      //         <a href="create.html?edit=${id}" class="text-slate-600 font-bold hover:text-black">
+      //           <i class="fa-regular fa-pen-to-square"></i> Edit
+      //         </a>
+      //         <button data-delete-id="${id}" class="delete-post-btn text-rose-600 font-bold hover:underline">
+      //           <i class="fa-regular fa-trash-can"></i> Delete
+      //         </button>
+      //       </div>
+      //     ` : ''}
+      //   </div>
+      // `;
+      // Card ko vertical flex-col layout diya hai
+card.className = "blog-card bg-white border border-slate-200 rounded-2xl overflow-hidden flex flex-col hover:shadow-md transition-shadow mb-6";
+
+card.innerHTML = `
+  <!-- TOP: Image Container with Fixed Height & Width -->
+  <div class="relative w-full h-60 bg-slate-100 overflow-hidden flex items-center justify-center">
+    <img 
+      src="${post.imageUrl || 'https://images.unsplash.com/photo-1483985988355-763728e1935b'}" 
+      class="blog-card-img w-full h-full object-cover object-center cursor-pointer hover:scale-105 transition-transform duration-300"
+    >
+    <button data-id="${id}" class="bookmark-btn absolute top-3 right-3 bg-white/80 p-2 rounded-full text-slate-700 hover:scale-110 transition shadow-sm">
+      <i class="${isBookmarked ? 'fa-solid text-amber-600' : 'fa-regular'} fa-bookmark"></i>
+    </button>
+  </div>
+
+  <!-- BOTTOM: Content Area -->
+  <div class="p-6 flex flex-col justify-between flex-1">
+    <div>
+      <span class="text-[10px] font-bold uppercase text-amber-600 tracking-widest">
+        By ${(post.authorName || 'Guest').split('@')[0]}
+      </span>
+      <h2 class="font-serif text-xl font-bold my-2 line-clamp-2">
+        <a href="article.html?id=${id}" class="hover:text-amber-600 transition-colors">${post.title}</a>
+      </h2>
+      <p class="text-slate-500 text-xs line-clamp-3">${post.content}</p>
+    </div>
+
+    <!-- Actions & Links Footer -->
+    <div class="mt-4 pt-4 border-t border-slate-100 flex justify-between items-center text-xs">
+      <a href="article.html?id=${id}" class="font-bold text-black hover:text-amber-600">
+        Read Article &rarr;
+      </a>
+
+      <!-- Edit/Delete Action Buttons (Only for Author) -->
+      ${isAuthor ? `
+        <div class="flex items-center gap-3">
+          <a href="create.html?edit=${id}" class="text-slate-600 font-bold hover:text-black">
+            <i class="fa-regular fa-pen-to-square"></i> Edit
+          </a>
+          <button data-delete-id="${id}" class="delete-post-btn text-rose-600 font-bold hover:underline">
+            <i class="fa-regular fa-trash-can"></i> Delete
+          </button>
         </div>
-      `;
+      ` : ''}
+    </div>
+  </div>
+`;
       postsGrid.appendChild(card);
     });
 
@@ -188,4 +235,68 @@ document.addEventListener("keydown", (e) => {
     hideImageModal();
   }
 });
+window.addEventListener("DOMContentLoaded", () => {
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const icon = mobileMenuBtn?.querySelector("i");
+
+    const mobileGuestMenu = document.getElementById("mobileGuestMenu");
+    const mobileUserMenu = document.getElementById("mobileUserMenu");
+    const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+    const desktopLogoutBtn = document.getElementById("logoutBtn");
+
+    // 1. Auth State Check (LocalStorage / SessionStorage sync)
+    function updateMobileMenuAuthState() {
+      // Apne authentication token / user key ke mutabiq check karein
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true" || !!localStorage.getItem("token");
+
+      if (isLoggedIn) {
+        mobileGuestMenu?.classList.add("hidden");
+        mobileUserMenu?.classList.remove("hidden");
+      } else {
+        mobileGuestMenu?.classList.remove("hidden");
+        mobileUserMenu?.classList.add("hidden");
+      }
+    }
+
+    // Run auth status check on load
+    updateMobileMenuAuthState();
+
+    // 2. Mobile Drawer Toggle
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const isHidden = mobileMenu.classList.contains("hidden");
+
+        if (isHidden) {
+          mobileMenu.classList.remove("hidden");
+          if (icon) icon.className = "fa-solid fa-xmark";
+          
+          if (typeof gsap !== "undefined") {
+            gsap.fromTo(mobileMenu, 
+              { opacity: 0, y: -10 }, 
+              { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }
+            );
+          }
+        } else {
+          mobileMenu.classList.add("hidden");
+          if (icon) icon.className = "fa-solid fa-bars";
+        }
+      });
+    }
+
+    // 3. Logout action handler for Mobile Menu
+    if (mobileLogoutBtn) {
+      mobileLogoutBtn.addEventListener("click", () => {
+        // Desktop logout function trigger karein ya session clear karein
+        if (desktopLogoutBtn) {
+          desktopLogoutBtn.click();
+        } else {
+          localStorage.removeItem("isLoggedIn");
+          localStorage.removeItem("token");
+          window.location.reload();
+        }
+      });
+    }
+  });
 

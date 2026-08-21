@@ -66,12 +66,32 @@
   </div>
 
   <!-- 📱 Mobile Dropdown Menu Drawer -->
-  <div id="mobileMenu" class="hidden md:hidden border-t border-slate-100 mt-3 pt-3 pb-2 space-y-2">
+  <!-- <div id="mobileMenu" class="hidden md:hidden border-t border-slate-100 mt-3 pt-3 pb-2 space-y-2">
     <a href="index.html" class="block text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-black transition py-2 px-1">Home</a>
     <a href="create.html" class="block text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-black transition py-2 px-1">Create Blog</a>
     <a href="profile.html" class="block text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-black transition py-2 px-1">Edit Profile</a>
     <a href="saved.html" class="block text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-black transition py-2 px-1">Bookmarks</a>
+  </div> -->
+  <!-- 📱 Mobile Dropdown Menu Drawer -->
+<div id="mobileMenu" class="hidden md:hidden border-t border-slate-100 mt-3 pt-3 pb-2 space-y-2">
+  <!-- Shared Link -->
+  <a href="index.html" class="block text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-black transition py-2 px-1">Home</a>
+
+  <!-- Guest (Logged Out) Links -->
+  <div id="mobileGuestMenu" class="space-y-2">
+    <a href="auth.html" class="block text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-black transition py-2 px-1">Log In</a>
   </div>
+
+  <!-- Authenticated (Logged In) Links -->
+  <div id="mobileUserMenu" class="hidden space-y-2">
+    <a href="create.html" class="block text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-black transition py-2 px-1">Create Blog</a>
+    <a href="profile.html" class="block text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-black transition py-2 px-1">Edit Profile</a>
+    <a href="saved.html" class="block text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-black transition py-2 px-1">Bookmarks</a>
+    <button id="mobileLogoutBtn" class="w-full text-left text-xs font-bold uppercase tracking-widest text-rose-500 hover:text-rose-700 transition py-2 px-1">
+      Logout
+    </button>
+  </div>
+</div>
 </header>
 
   <!-- Hero Section -->
@@ -90,7 +110,7 @@
   </section>
 
   <!-- Main Feed Grid -->
-  <main class="max-w-7xl mx-auto px-6 py-16">
+  <!-- <main class="max-w-7xl mx-auto px-6 py-16">
     <div class="flex items-center justify-between mb-10 pb-4 border-b border-slate-200">
       <h2 class="font-serif text-3xl font-bold">Latest Stories</h2>
       <span class="text-xs uppercase font-semibold tracking-widest text-slate-400">Editorial Journal</span>
@@ -99,8 +119,56 @@
     <div id="postsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
       <div class="col-span-full text-center py-20 text-slate-400">Loading stories...</div>
     </div>
-  </main>
+  </main> -->
+<main class="max-w-7xl mx-auto px-6 py-16">
+  <!-- Page Header -->
+  <div class="flex items-center justify-between mb-10 pb-4 border-b border-slate-200">
+    <h2 class="font-serif text-3xl font-bold">Latest Stories</h2>
+    <span class="text-xs uppercase font-semibold tracking-widest text-slate-400">Editorial Journal</span>
+  </div>
 
+  <!-- Main 2-Column Grid Layout -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+    
+    <!-- LEFT SIDE: Vertical Blogs Container (Takes 2 Columns) -->
+    <!-- Note: flex flex-col se saare dynamic posts ek ke niche ek (vertically) aayenge -->
+    <div id="postsGrid" class="md:col-span-2 flex flex-col gap-8">
+      <div class="text-center py-20 text-slate-400">Loading stories...</div>
+    </div>
+
+    <!-- RIGHT SIDE: Sidebar with Search (Takes 1 Column) -->
+    <aside class="md:col-span-1">
+      <div class="sticky top-28 flex flex-col gap-8">
+        
+        <!-- Search Widget -->
+        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+          <h3 class="font-serif text-lg font-bold text-slate-800 mb-3">Search Stories</h3>
+          <div class="relative">
+            <input 
+              type="text" 
+              id="searchInput" 
+              placeholder="Search by title or topic..." 
+              class="w-full pl-10 pr-4 py-3 text-sm bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black transition-all"
+            />
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-4 text-slate-400 text-sm"></i>
+          </div>
+        </div>
+
+        <!-- Optional Category Filters Widget -->
+        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+          <h3 class="font-serif text-lg font-bold text-slate-800 mb-3">Explore Topics</h3>
+          <div class="flex flex-wrap gap-2">
+            <button class="px-3.5 py-1.5 bg-white border border-slate-200 hover:border-black text-xs font-semibold rounded-full transition-colors">All</button>
+            <button class="px-3.5 py-1.5 bg-white border border-slate-200 hover:border-black text-xs font-semibold rounded-full transition-colors">Trends</button>
+            <button class="px-3.5 py-1.5 bg-white border border-slate-200 hover:border-black text-xs font-semibold rounded-full transition-colors">Style Guide</button>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+  </div>
+</main>
   <!-- Footer -->
   <footer class="bg-slate-900 text-white pt-16 pb-12 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
@@ -152,33 +220,33 @@
     gsap.from(".hero-btn", { opacity: 0, scale: 0.8, duration: 0.8, delay: 0.8 });
 
     // Mobile Menu Toggle Engine
-    window.addEventListener("DOMContentLoaded", () => {
-      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-      const mobileMenu = document.getElementById("mobileMenu");
-      const icon = mobileMenuBtn?.querySelector("i");
+    // window.addEventListener("DOMContentLoaded", () => {
+    //   const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    //   const mobileMenu = document.getElementById("mobileMenu");
+    //   const icon = mobileMenuBtn?.querySelector("i");
 
-      if (!mobileMenuBtn || !mobileMenu) return;
+    //   if (!mobileMenuBtn || !mobileMenu) return;
 
-      mobileMenuBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const isHidden = mobileMenu.classList.contains("hidden");
+    //   mobileMenuBtn.addEventListener("click", (e) => {
+    //     e.preventDefault();
+    //     const isHidden = mobileMenu.classList.contains("hidden");
 
-        if (isHidden) {
-          mobileMenu.classList.remove("hidden");
-          if (icon) icon.className = "fa-solid fa-xmark";
+    //     if (isHidden) {
+    //       mobileMenu.classList.remove("hidden");
+    //       if (icon) icon.className = "fa-solid fa-xmark";
           
-          if (typeof gsap !== "undefined") {
-            gsap.fromTo(mobileMenu, 
-              { opacity: 0, y: -10 }, 
-              { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }
-            );
-          }
-        } else {
-          mobileMenu.classList.add("hidden");
-          if (icon) icon.className = "fa-solid fa-bars";
-        }
-      });
-    });
+    //       if (typeof gsap !== "undefined") {
+    //         gsap.fromTo(mobileMenu, 
+    //           { opacity: 0, y: -10 }, 
+    //           { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }
+    //         );
+    //       }
+    //     } else {
+    //       mobileMenu.classList.add("hidden");
+    //       if (icon) icon.className = "fa-solid fa-bars";
+    //     }
+    //   });
+    // });
   </script>
 </body>
 </html>

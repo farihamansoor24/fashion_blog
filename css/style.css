@@ -86,4 +86,7 @@ body {
   #navLinks {
     display: none !important;
   }
+  #navAuthBtns{
+    display: none !important;
+  }
 }
