@@ -24,6 +24,7 @@ if (logoutBtn) {
   });
 }
 initAuth(async (user) => {
+ 
   currentUser = user;
   if (user) {
     await fetchUserBookmarks(user.uid);
@@ -248,15 +249,19 @@ window.addEventListener("DOMContentLoaded", () => {
     // 1. Auth State Check (LocalStorage / SessionStorage sync)
     function updateMobileMenuAuthState() {
       // Apne authentication token / user key ke mutabiq check karein
-      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true" || !!localStorage.getItem("token");
-
-      if (isLoggedIn) {
+      // const isLoggedIn = localStorage.getItem("isLoggedIn") === "true" || !!localStorage.getItem("token");
+      onAuthStateChanged(auth,(user)=>{
+        currentUser=user.uid;
+       if (currentUser) {
         mobileGuestMenu?.classList.add("hidden");
         mobileUserMenu?.classList.remove("hidden");
       } else {
         mobileGuestMenu?.classList.remove("hidden");
         mobileUserMenu?.classList.add("hidden");
       }
+      })
+     
+     
     }
 
     // Run auth status check on load

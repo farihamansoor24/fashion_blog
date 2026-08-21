@@ -41,7 +41,7 @@
 
       <!-- Logged-In User Profile & Logout Area -->
       <div id="navUserMenu" class="hidden items-center gap-2 sm:gap-3">
-        <a href="profile.html" title="View & Edit Profile" class="flex items-center gap-2 bg-slate-100/80 hover:bg-slate-200/70 px-2.5 sm:px-3.5 py-1.5 rounded-full border border-slate-200/60 transition-all duration-300" id="userBadge">
+        <a href="profile.html" id="profile" title="View & Edit Profile" class="flex items-center gap-2 bg-slate-100/80 hover:bg-slate-200/70 px-2.5 sm:px-3.5 py-1.5 rounded-full border border-slate-200/60 transition-all duration-300" id="userBadge">
           <div id="userAvatar" class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center text-white text-[10px] sm:text-[11px] font-bold shadow-xs shrink-0">
           </div>
           <!-- Username hidden on very small screens to prevent overflow -->
@@ -84,6 +84,7 @@
 
   <!-- Authenticated (Logged In) Links -->
   <div id="mobileUserMenu" class="hidden space-y-2">
+
     <a href="create.html" class="block text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-black transition py-2 px-1">Create Blog</a>
     <a href="profile.html" class="block text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-black transition py-2 px-1">Edit Profile</a>
     <a href="saved.html" class="block text-xs font-bold uppercase tracking-widest text-slate-600 hover:text-black transition py-2 px-1">Bookmarks</a>

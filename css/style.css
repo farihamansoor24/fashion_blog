@@ -89,4 +89,10 @@ body {
   #navAuthBtns{
     display: none !important;
   }
+  #logoutBtn{
+     display: none !important;
+  }
+  #profile{
+    display: none !important;
+  }
 }
